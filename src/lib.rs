@@ -30,6 +30,34 @@
 //! }
 //! ```
 //!
+//! To use pattern there is `match_down` macro:
+//!
+//! ```rust
+//! #[macro_use]
+//! extern crate match_cast;
+//! use std::any::Any;
+//!
+//! struct Bar {
+//!     x: u8,
+//! }
+//!
+//! struct Foo {
+//!     x: u8,
+//! }
+//!
+//! fn main() {
+//!
+//!     let any: Box<Any> = Box::new(Foo { x: 45 });
+//!
+//!     let result = match_down!( any {
+//!         Bar { x } => { x },
+//!         Foo { x } => { x },
+//!     });
+//!
+//!     assert_eq!(result.unwrap(), 45);
+//! }
+//! ```
+
 
 #[macro_export]
 macro_rules! match_cast {
@@ -37,6 +65,21 @@ macro_rules! match_cast {
         let downcast = || {
             $(
             if let Some($bind) = $any.downcast_ref::<$patt>() {
+                return Some($body);
+            }
+            )+
+            None
+        };
+        downcast()
+    }};
+}
+
+#[macro_export]
+macro_rules! match_down {
+    ($any:ident { $( $pt:pat => $body:block , )+ }) => {{
+        let downcast = || {
+            $(
+            if let Some(&$pt) = $any.downcast_ref() {
                 return Some($body);
             }
             )+
