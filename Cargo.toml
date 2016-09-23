@@ -1,0 +1,10 @@
+[package]
+name = "match_cast"
+version = "0.1.0"
+readme = "README.md"
+authors = ["Denis Kolodin <deniskolodin@gmail.com>"]
+description = "Macro to match through Any types"
+repository = "https://github.com/DenisKolodin/match_cast"
+license = "MIT/Apache-2.0"
+
+[dependencies]
