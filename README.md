@@ -32,3 +32,30 @@ fn main() {
 }
 ```
 
+To use pattern there is `match_down` macro:
+
+```rust
+#[macro_use]
+extern crate match_cast;
+use std::any::Any;
+
+struct Bar {
+    x: u8,
+}
+
+struct Foo {
+    x: u8,
+}
+
+fn main() {
+
+    let any: Box<Any> = Box::new(Foo { x: 45 });
+
+    let result = match_down!( any {
+        Bar { x } => { x },
+        Foo { x } => { x },
+    });
+
+    assert_eq!(result.unwrap(), 45);
+}
+```
